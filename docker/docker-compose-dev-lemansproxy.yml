@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - environment/dev/postgres.env
+      - environment/lemans-proxy.env
+    ports:
+      - ${POSTGRES_PUBLIC_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./databasesInit/postgres/dev/entrypoint:/docker-entrypoint-initdb.d:ro    
+      - ./databasesInit/postgres/dev/data:/db/data/   
+
+  http:
+    build:
+      context: ../
+      dockerfile: docker/http/Dockerfile
+      args:
+        - APP_ENV=${APP_ENV}
+        - http_proxy=http://vproxy.univ-lemans.fr:3128
+        - https_proxy=http://vproxy.univ-lemans.fr:3128
+        - no_proxy=127.0.0.1,localhost
+    env_file:
+      - environment/global.env    
+      - environment/lemans-proxy.env 
+      - environment/dev/http.env
+    # command: gunicorn --bind 0.0.0.0:5000 wsgi:run_app
+    command : flask run -h 0.0.0.0 -p 5000
+    # command: tail -f /dev/null
+    volumes:
+      - ../api/:/usr/src/app
+    ports:
+      - 5000:5000
+
+  yarn:
+    image: node:14
+    env_file:
+      - environment/dev/yarn.env
+    volumes:
+      - ../app:/var/www/app
+    working_dir: /var/www/app
+    ports:
+      - 127.0.0.1:3000:3000
+      - 9222:9222
+    command: bash -c "yarn install && yarn start"
+    #command: bash -c "tail -f /dev/null"
+
+
+volumes:
+  pgdata:

@@ -1,0 +1,5 @@
+# development adds to the testing requirements the tools needed during development
+-r testing.txt
+flake8
+flask-cors
+debugpy

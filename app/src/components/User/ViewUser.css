@@ -1,0 +1,13 @@
+.users-list .user {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    width: 4%;
+}
+
+.users-list .user .link {
+    cursor: pointer;
+    font-size: 12px;
+}
+
+

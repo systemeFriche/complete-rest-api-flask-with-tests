@@ -1,0 +1,7 @@
+# testing adds to those the packages used to test the code
+-r production.txt
+pytest
+pytest-html
+coverage
+pytest-cov
+pytest-flask

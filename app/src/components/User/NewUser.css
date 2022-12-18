@@ -1,0 +1,8 @@
+.new-user {
+    width: 100%;
+    margin-left: 6%;
+}
+
+.new-user .message {
+    color: red;
+}

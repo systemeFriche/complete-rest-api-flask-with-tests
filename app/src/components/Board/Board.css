@@ -1,0 +1,17 @@
+.board {
+    width: 100%;
+    margin-left: 6%;
+}
+
+.board h1 {
+    margin-bottom: 1%;
+}
+
+.board .message {
+    color: red;
+}
+
+.board .users-list {
+    display: flex;
+    flex-direction: row;
+}

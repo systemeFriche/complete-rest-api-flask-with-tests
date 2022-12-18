@@ -1,0 +1,9 @@
+{
+    "name": "Complete Flask Rest API boilerplate Documentation",
+    "version": "1.0.0",
+    "description": "Documentation de l'API",
+    "template": {
+        "forceLanguage": "fr"
+    },
+    "url" : "http://localhost:5000"
+}

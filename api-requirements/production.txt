@@ -1,0 +1,12 @@
+# Minimum requirements needed to run the project in a production environnement
+python-dotenv
+gunicorn
+Flask-JWT-Extended
+Flask-RESTful
+Flask-SQLAlchemy
+flask-migrate
+flask-apidoc-extend
+psycopg2-binary
+requests
+pycryptodome
+bcrypt
