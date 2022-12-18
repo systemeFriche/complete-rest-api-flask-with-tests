@@ -1,0 +1,55 @@
+#!/bin/bash
+#TODO : à chaque fois que dcTool sera exécuté les variables d'env seront à chaque fois calculées
+# il n'y a pas d'effet mémoire au-delà de l'exécutio de ce script
+
+print_usage(){
+  echo "Usage: $0 <dev | test | prod> [--lemans-proxy] [--help] [ARGS...]"
+}
+
+print_help_and_exit(){
+  echo "dcTool - Outil d'aide à la commande pour la gestion de vos piles Docker."
+  echo
+  print_usage
+  echo "Environnement : "
+  echo "  dev :                  utilise la pile de services pour l'environnement de développement."
+  echo "  test :                 utilise la pile de services pour l'environnement de tests."
+  echo "  prod :                 utilise la pile de services pour l'environnement de recette ou de production."
+  echo
+  echo "Paramètres optionnels :"
+  echo "  -lmp, --lemans-proxy  : configure la pile pour être exploitée derrière le proxy de Le Mans Université"
+  echo "  - -h, --help : affiche cette aide."
+  echo " ARGS :                  exemple des arguments pour docker-compose (ex.: up)"
+  exit 0
+}
+
+if [ $# -eq 0 ]; then
+  echo "Mauvais paramètres" >&2
+  print_usage
+  exit 1
+fi
+
+case $1 in
+    dev|test|prod)
+        typeEnv=$1
+        shift
+        if [ "$1" == "-lmp" -o "$1" == "--lemans-proxy" ]; then
+          proxyEnv="-lmp"
+          shift
+        else
+          proxyEnv=""
+        fi
+        if [[ ! $DOCKER_FILE || ! $PROJECT_NAME ]]; then
+          echo "No Env Var."
+          source ./export_env_var.sh ${typeEnv} ${proxyEnv}
+        fi
+      set -x
+      docker compose --env-file ../docker/docker-compose.env -f $DOCKER_FILE -p $PROJECT_NAME $@
+      exit $? ;;
+    -h|--help) print_help_and_exit;;
+    *)
+      echo "Paramètre incorrect \"$1\"" >&2;
+      print_usage
+      exit 1;;
+  esac
+  shift
+

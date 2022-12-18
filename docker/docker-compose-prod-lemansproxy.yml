@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - environment/prod/postgres.env
+      - environment/lemans-proxy.env
+    ports:
+      - ${POSTGRES_PROD_PUBLIC_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./databasesInit/postgres/prod:/docker-entrypoint-initdb.d:ro      
+
+  http:
+    build:
+      context: ../
+      dockerfile: docker/http/prod/Dockerfile
+      args:
+        - APP_ENV=${APP_ENV}
+        - http_proxy=http://vproxy.univ-lemans.fr:3128
+        - https_proxy=http://vproxy.univ-lemans.fr:3128
+        - no_proxy=127.0.0.1,localhost
+    env_file:
+      - environment/global.env
+      - environment/lemans-proxy.env 
+      - environment/prod/http.env
+      - environment/prod/http_secret.env
+    # command: gunicorn --bind 0.0.0.0:5000 wsgi:run_app
+    # command : flask run -h 0.0.0.0 -p 5000
+    # command: tail -f /dev/null
+    volumes:
+      - ../api/:/usr/src/app
+    ports:
+      - 5000:5000
+
+volumes:
+  pgdata:

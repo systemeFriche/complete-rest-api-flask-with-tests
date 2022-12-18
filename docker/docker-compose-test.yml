@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - environment/test/postgres.env
+    ports:
+      - ${POSTGRES_TEST_PUBLIC_PORT}:5432
+    volumes:
+      - ./databasesInit/postgres/test:/docker-entrypoint-initdb.d:ro
+
+  http:
+    build:
+      context: ../
+      dockerfile: docker/http/Dockerfile
+      args:
+        APP_ENV: "testing"
+    env_file:
+      - environment/global.env    
+      - environment/test/http.env
+    # command: gunicorn --bind 0.0.0.0:5000 wsgi:run_app
+    # command : flask run -h 0.0.0.0 -p 5000
+    command: tail -f /dev/null
+    # command : pytest -svv --cov=main --cov-report=term-missing
+    volumes:
+      - ../api/:/usr/src/app

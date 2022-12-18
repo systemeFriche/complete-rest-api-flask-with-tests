@@ -1,0 +1,16 @@
+[
+    {
+        "username": "fguntz",
+        "email": "fabien.guntz@univ-lemans.fr",
+        "password": "toto",
+        "access": 2,
+        "gitHubToken": "Here Your GitHub token"
+    },
+    {
+        "username": "sysFriche2",
+        "email": "fguntzpro@gmail.com",
+        "password": "toto",
+        "access": 1,
+        "gitHubToken": "Here Your GitHub Token"
+    }
+]

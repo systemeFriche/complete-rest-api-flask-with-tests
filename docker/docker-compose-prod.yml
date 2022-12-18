@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - environment/prod/postgres.env
+    ports:
+      - ${POSTGRES_PROD_PUBLIC_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./databasesInit/postgres/prod:/docker-entrypoint-initdb.d:ro      
+
+  yarn:
+    image: node:14
+    env_file:
+      - environment/prod/yarn.env
+    volumes:
+      - ../app:/var/www/app
+    working_dir: /var/www/app
+    command: bash -c "yarn install && yarn build"
+
+  http:
+    build:
+      context: ../
+      dockerfile: docker/http/prod/Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+    env_file:
+      - environment/global.env    
+      - environment/prod/http.env
+    command: gunicorn --bind 0.0.0.0:80 app:app
+    # command: tail -f /dev/null
+    volumes:
+      - ../api/:/usr/src/app
+      - ../app/build:/usr/src/app/public
+    ports:
+      - 80:80
+
+volumes:
+  pgdata:
