@@ -42,8 +42,7 @@ const ViewBoardUserProject = () => {
     return (
         <div className="user-projects">
         { //s'il y a des projets à afficher
-            
-            userProjects.length > 0 ? 
+            userProjects && userProjects.length > 0 ? 
                 _displayProjects()
             :
                 <p className="message">Il n'y a pas de projets à afficher...</p>

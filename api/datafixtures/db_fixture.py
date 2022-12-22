@@ -8,7 +8,6 @@ from main import create_app  # noqa: E402
 from main.database import db  # noqa: E402
 from main.models.user_model import UserModel  # noqa: E402
 from main.models.task_model import TaskModel  # noqa: E402
-from main.utils import get_hashed_password  # noqa: E402
 
 with open(api_dir+"/datafixtures/data.json") as file:
     users_raw = file.read()

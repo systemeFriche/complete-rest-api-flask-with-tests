@@ -1,0 +1,21 @@
+from main.models.user_model import UserModel
+from main.utils import AES_CIPHER_TOKEN, check_password
+
+
+def test__create_user(database):
+    data = {
+        "username": "fguntz",
+        "email": "fabien.guntz@univ-lemans.fr",
+        "password": "toto",
+        "access": 2,
+        "gitHubToken": "ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+    user1 = UserModel(**data)
+    database.session.add(user1)
+    database.session.commit()
+
+    user = UserModel.query.first()
+
+    assert (user.email == data["email"] and user.username == data["username"] and
+            check_password(data["password"], user.password) and user.access == data["access"] and
+            AES_CIPHER_TOKEN.decrypt(user.gitHubToken) == data["gitHubToken"])
