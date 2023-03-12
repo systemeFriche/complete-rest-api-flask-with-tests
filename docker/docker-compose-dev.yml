@@ -2,20 +2,20 @@ version: '3.4'
 
 services:
   db:
-    image: postgres
+    image: mariadb:10.11
     env_file:
-      - environment/dev/postgres.env
+      - environment/dev/mariadb.env
     ports:
-      - ${POSTGRES_PUBLIC_PORT}:5432
+      - ${MYSQL_PUBLIC_PORT}:3306
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./databasesInit/postgres/dev/entrypoint:/docker-entrypoint-initdb.d:ro
-      - ./databasesInit/postgres/dev/data:/db/data/
+      - mysql-data:/var/lib/mysql
+      #- ./databasesInit/mariadb/dev/entrypoint:/docker-entrypoint-initdb.d:ro
+      - ./databasesInit/mariadb/dev/data:/db/data/
 
   http:
     build:
       context: ../
-      dockerfile: docker/http/Dockerfile
+      dockerfile: docker/http/dev/Dockerfile
       args:
         APP_ENV: ${APP_ENV}
     env_file:
@@ -32,7 +32,7 @@ services:
       - 5678:5678
 
   yarn:
-    image: node:14
+    image: node:18
     env_file:
       - environment/dev/yarn.env
     volumes:
@@ -46,4 +46,4 @@ services:
 
 
 volumes:
-  pgdata:
+  mysql-data:

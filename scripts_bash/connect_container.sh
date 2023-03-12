@@ -33,7 +33,7 @@ case $1 in
       exit 1
     else
       if [ "$2" == "db" ]; then
-        cmd="psql -U postgres"
+        cmd="mysql -u mariadb -p"
       else
         cmd="bash"
       fi

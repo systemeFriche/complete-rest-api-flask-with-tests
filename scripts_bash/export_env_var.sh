@@ -1,6 +1,8 @@
 #!/bin/bash
 # ATTENTION IL FAUT EXECUTER CE SCRIPT POUR DEFINIR LES VARIABLES D'ENV UTILE A DCTOOL
 # création des variables d'environnement suivantes :
+# APP_ENV
+# MYSQL_PUBLIC_PORT
 # PROJECT_NAME
 # DOCKER_FILE
 
@@ -57,9 +59,12 @@ if [ "$1" == "-h" -o "$1" == "--help" ]; then
   print_help_and_exit
 fi
 
-case ${typeEnv} in
+case $typeEnv in
 
   dev)
+    export APP_ENV=development
+    export MYSQL_PUBLIC_PORT=3306
+    export MYSQL_DATABASE=db_dev
     if [ ! -z "${useProxyEnv}" ] ; then
       dcFile="../docker/docker-compose-dev-lemansproxy.yml"
     else
@@ -69,15 +74,23 @@ case ${typeEnv} in
     ;;
 
   test)
-      if [ ! -z "${useProxyEnv}" ] ; then
-        dcFile="../docker/docker-compose-test-lemansproxy.yml"
-      else
-        dcFile="../docker/docker-compose-test.yml"
-      fi
-      prjName="${SHORT_NAME_PROJECT}-test"
+    export APP_ENV=test
+    export MYSQL_PUBLIC_PORT=3307
+    export MYSQL_DATABASE=db_test
+    if [ ! -z "${useProxyEnv}" ] ; then
+      dcFile="../docker/docker-compose-test-lemansproxy.yml"
+    else
+      dcFile="../docker/docker-compose-test.yml"
+    fi
+    prjName="${SHORT_NAME_PROJECT}-test"
     ;;
 
   prod)
+    export APP_ENV=production
+    export MYSQL_PUBLIC_PORT=3308
+    export MYSQL_DATABASE=db_prod
+    export APP_TITLE='My WebApp Front'
+    export REACT_APP_API_EP_URI=http://127.0.0.1/api
     if [ ! -z "${useProxyEnv}" ] ; then
       dcFile="../docker/docker-compose-prod-lemansproxy.yml"
     else

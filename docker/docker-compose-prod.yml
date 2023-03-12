@@ -2,40 +2,40 @@ version: '3.4'
 
 services:
   db:
-    image: postgres
+    image: mariadb:10.11
     env_file:
-      - environment/prod/postgres.env
+      - environment/prod/mariadb.env
     ports:
-      - ${POSTGRES_PROD_PUBLIC_PORT}:5432
+      - ${MYSQL_PUBLIC_PORT}:3306
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./databasesInit/postgres/prod:/docker-entrypoint-initdb.d:ro      
+      - mysqldata-prod:/var/lib/mysql
+      # - ./databasesInit/mariadb/prod:/docker-entrypoint-initdb.d:ro      
 
-  yarn:
-    image: node:14
-    env_file:
-      - environment/prod/yarn.env
-    volumes:
-      - ../app:/var/www/app
-    working_dir: /var/www/app
-    command: bash -c "yarn install && yarn build"
+  # yarn:
+  #   image: node:14
+  #   env_file:
+  #     - environment/prod/yarn.env
+  #   volumes:
+  #     - ../app:/var/www/app
+  #   working_dir: /var/www/app
+  #   command: bash -c "yarn install && yarn build"
 
   http:
     build:
       context: ../
       dockerfile: docker/http/prod/Dockerfile
       args:
-        APP_ENV: ${APP_ENV}
+        REACT_APP_API_EP_URI: ${REACT_APP_API_EP_URI}
     env_file:
       - environment/global.env    
       - environment/prod/http.env
-    command: gunicorn --bind 0.0.0.0:80 app:app
+    # command: gunicorn --bind 0.0.0.0:80 app:app
     # command: tail -f /dev/null
-    volumes:
-      - ../api/:/usr/src/app
-      - ../app/build:/usr/src/app/public
+    # volumes:
+    #   - ../api/:/usr/src/app
+    #   - ../app/build:/usr/src/app/public
     ports:
       - 80:80
 
 volumes:
-  pgdata:
+  mysqldata-prod:

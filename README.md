@@ -88,7 +88,7 @@ Pour peupler la base de données de la pile de dev, il faut exécuter le script 
 $ ./db_import_data.sh dev
 ```
 
-Ce script gère l'import du fichier ./docker/databasesInit/postgres/dev/data/data_users.sql s'il existe. 
+Ce script gère l'import du fichier ./docker/databasesInit/mariadb/dev/data/data_users.sql s'il existe. 
 Et il exécute le script python ./api/datafixtures/db_fixture.py s'il existe. 
 
 # ENVIRONNEMENT VSCODE DE DEV/DEBUG DE L'APPLICATION WEB

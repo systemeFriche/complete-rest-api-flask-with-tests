@@ -2,13 +2,13 @@ version: '3.4'
 
 services:
   dbtest:
-    image: postgres
+    image: mariadb:10.11
     env_file:
-      - environment/test/postgres.env
+      - environment/test/mariadb.env
     ports:
-      - ${POSTGRES_TEST_PUBLIC_PORT}:5432
+      - ${MYSQL_PUBLIC_PORT}:3306
     volumes:
-      - ./databasesInit/postgres/test/entrypoint:/docker-entrypoint-initdb.d:ro
+      # - ./databasesInit/mariadb/test/entrypoint:/docker-entrypoint-initdb.d:ro
 
   http:
     build:
