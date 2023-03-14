@@ -1,0 +1,42 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release
+
+jobs:
+  docker: 
+    runs-on: fguntz/python-node-cpltrestapi:1.0
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          platforms: linux/amd64
+          file: ./docker/http/prod/Dockerfile
+          push: true
+          tags: ghcr.io/systemefriche/complete-rest-api-flask-with-tests:latest,ghcr.io/systemefriche/complete-rest-api-flask-with-tests:${{ github.sha }}
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy application
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{ secrets.VPS_DOKKU_HOST }}
+          port: ${{secrets.VPS_DOKKU_PORT}}
+          host_fingerprint: ${{secrets.VPS_DOKKU_FINGERPRINT}}
+          user: ${{ secrets.VPS_DOKKU_USER }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            dokku git:from-image complete-rest-api-flask-with-tests ghcr.io/systemefriche/complete-rest-api-flask-with-tests:latest
+            dokku ps:rebuild complete-rest-api-flask-with-tests
