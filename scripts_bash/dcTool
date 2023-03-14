@@ -39,11 +39,13 @@ case $1 in
           proxyEnv=""
         fi
         if [[ ! $DOCKER_FILE || ! $PROJECT_NAME ]]; then
-          echo "No Env Var."
+          echo "Env Vars Not defined. We load them."
           source ./export_env_var.sh ${typeEnv} ${proxyEnv}
         fi
       set -x
-      docker compose --env-file ../docker/docker-compose.env -f $DOCKER_FILE -p $PROJECT_NAME $@
+      # plus besoin de docker-compose.env toutes les variables d'environnement sont définis avec le script export_env_var.sh
+      # docker compose --env-file ../docker/docker-compose.env -f $DOCKER_FILE -p $PROJECT_NAME $@
+      docker compose -f $DOCKER_FILE -p $PROJECT_NAME $@
       exit $? ;;
     -h|--help) print_help_and_exit;;
     *)

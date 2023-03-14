@@ -1,29 +1,25 @@
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import {
-  logout
-} from '../../store/reducer/authSlice'
+import { logout } from '../../store/reducer/authSlice'
 
-import './NavBar.css';
+import './NavBar.css'
 
 const Navbar = () => {
-
-  //no prop
-  //no state
-  //no store
-  //no param
-  //local variable
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // no prop
+  // no state
+  // no store
+  // no param
+  // local variable
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const _logout = () => {
     dispatch(logout())
-    navigate("/")
-  };
+    navigate('/')
+  }
 
-  return(
+  return (
     <nav className="main-menu">
       <ul>
         <li>
@@ -46,14 +42,13 @@ const Navbar = () => {
               New User
             </div>
           </NavLink>
-        </li>   
+        </li>
         <li>
           <div onClick={_logout} className="logout">Logout</div>
-        </li>               
+        </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
-
+export default Navbar

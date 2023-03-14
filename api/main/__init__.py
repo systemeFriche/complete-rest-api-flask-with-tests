@@ -2,10 +2,11 @@ from os import getenv
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from flask_apidoc_extend import ApiDoc
 if (getenv("FLASK_ENV") == 'development'):
     from flask_cors import CORS
-
+# TODO: a-ton besoin de Apidoc pour l'environnement de dev ?
+if (getenv("FLASK_ENV") != 'testing'):
+    from flask_apidoc_extend import ApiDoc
 from config import config_selector
 from main.database import db, migrate
 from main.resources.user_resource import UsersList, User, UserGitHubProjects, UserRegister, UserLogin, UserLogout, TokenRefresh, UserTasks
@@ -17,7 +18,7 @@ def create_app():
     API_URL_PREFIX = "/api"
     configs = config_selector[getenv("FLASK_ENV")]
 
-    if (getenv("FLASK_ENV") == 'development'):
+    if (getenv("FLASK_ENV") == 'development' or getenv("FLASK_ENV") == 'testing'):
         app = Flask(__name__)
     if (getenv("FLASK_ENV") == 'production'):
         app = Flask(__name__, static_folder='../public', static_url_path='/')
@@ -28,11 +29,14 @@ def create_app():
     if (getenv("FLASK_ENV") == 'development'):
         CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+    # TODO: a-t-on besoin de ces deux lignes vu que c'est fait avec le script bash db_import.sh
+    # peut-êtr eque oui car là on initialise le service database par rapport à l'application flask
     db.init_app(app)
     migrate.init_app(app, db)
 
     # pour créer un point d'entrée pour la documentation de l'Api
-    ApiDoc(app=app, input_path='main/resources', url_path='/api/docs')
+    if (getenv("FLASK_ENV") != 'testing'):
+        ApiDoc(app=app, input_path='main/resources', url_path='/api/docs')
 
     api = Api(app, API_URL_PREFIX)
 
@@ -104,7 +108,7 @@ def create_app():
     def create_tables():
         db.create_all()
     """
-    
+
     # pour définir le point d'entrée de l'application sur le front React
     if (getenv("FLASK_ENV") == 'production'):
         @app.route('/')

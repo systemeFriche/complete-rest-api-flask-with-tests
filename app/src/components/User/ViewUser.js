@@ -1,28 +1,27 @@
-import React from 'react';
-import { IconContext } from 'react-icons';
-import { BsPerson } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types'
+import { IconContext } from 'react-icons'
+import { BsPerson } from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
 
-import './ViewUser.css';
- 
-const ViewList = ({user}) => {
+import './ViewUser.css'
 
-    //prop
-        //user : {access: 2, id: 1, username: "fguntz"}
-    //no state
-    //no store
-    //no param
-    //local variable
-    let navigate = useNavigate();   
+const ViewList = ({ user }) => {
+  // prop
+  //    user : { access: 2, id: 1, username: 'fguntz' }
+  // no state
+  // no store
+  // no param
+  // local variable
+  const navigate = useNavigate()
 
-    const _handleClick = () => {
-        navigate('/user/'+user.id)
-    }
+  const _handleClick = () => {
+    navigate('/user/' + user.id)
+  }
 
-    return (
+  return (
         <div className="user">
             <div className="avatar">
-                <IconContext.Provider value={{ size: "3em"}}>
+                <IconContext.Provider value={{ size: '3em' }}>
                     <BsPerson />
                 </IconContext.Provider>
             </div>
@@ -31,9 +30,13 @@ const ViewList = ({user}) => {
             </div>
             <div className="link" onClick={_handleClick}>
                 <span>Voir fiche</span>
-            </div>  
+            </div>
         </div>
-    )
+  )
 }
- 
-export default ViewList;
+
+ViewList.propTypes = {
+  user: PropTypes.object.isRequired
+}
+
+export default ViewList

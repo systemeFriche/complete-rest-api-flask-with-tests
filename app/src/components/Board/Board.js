@@ -1,31 +1,26 @@
-import React, { useEffect } from 'react';
-import { useStore, useSelector } from 'react-redux';
+import { useEffect } from 'react'
+import { useStore, useSelector } from 'react-redux'
 
-import ViewBoardUsers from '../User/ViewBoardUsers';
-import ViewBoardUserProjects from '../User/ViewBoardUserProjects';
+import ViewBoardUsers from '../User/ViewBoardUsers'
+import ViewBoardUserProjects from '../User/ViewBoardUserProjects'
 
-import ViewBoardUserTasks from '../User/ViewBoardUserTasks';
-import './Board.css';
+import ViewBoardUserTasks from '../User/ViewBoardUserTasks'
+import './Board.css'
 
-import {
-  users,
-  selectFetchUsersStatus,
-  selectFetchUsersError
-} from '../../store/reducer/usersSlice';
+import { users, selectFetchUsersStatus, selectFetchUsersError } from '../../store/reducer/usersSlice'
 
-import { fetchUsers } from '../../misc/services';
+import { fetchUsers } from '../../misc/services'
 
 const Board = () => {
-
-  //no prop
-  //no state
-  //store
+  // no prop
+  // no state
+  // store
   const usersList = useSelector(users)
   const error = useSelector(selectFetchUsersError)
-  const loading = useSelector(selectFetchUsersStatus) === 'void' ? true : false;
-  //no param
-  //local variables
-  const store = useStore();
+  const loading = useSelector(selectFetchUsersStatus) === 'void'
+  // no param
+  // local variables
+  const store = useStore()
 
   const _displayError = () => {
     return (
@@ -37,9 +32,9 @@ const Board = () => {
 
   useEffect(() => {
     fetchUsers(store)
-  },[store]);
+  }, [store])
 
-  return(
+  return (
     <div className="board">
       <h1>Board</h1>
       <h2>Les utilisateurs</h2>
@@ -52,8 +47,7 @@ const Board = () => {
       <h2>Mes tâches</h2>
       { !loading && !error && <ViewBoardUserTasks/> }
     </div>
-  );
+  )
 }
 
-export default Board;
-
+export default Board

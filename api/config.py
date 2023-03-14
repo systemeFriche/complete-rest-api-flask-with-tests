@@ -7,9 +7,9 @@ load_dotenv()
 # When deploying to Heroku the DATABASE_URL is set to 'postgres://',
 # but since SQLAlquemy version 1.4 the connection uri must start with 'postgresql://'.
 # This logic is suppost to fix that.
-uri = getenv("SQLALCHEMY_DATABASE_URI")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+# uri = getenv("SQLALCHEMY_DATABASE_URI")
+# if uri and uri.startswith("postgres://"):
+#    uri = uri.replace("postgres://", "postgresql://", 1)
 
 # Get Database configurations
 # plus besoin
@@ -41,7 +41,6 @@ class ProductionConfig(Config):
     FLASK_ENV = 'production'
     FLASK_RUN_HOST = getenv("FLASK_RUN_HOST")
     FLASK_RUN_PORT = getenv("FLASK_RUN_PORT")
-    SQLALCHEMY_DATABASE_URI = uri
 
 
 class TestingConfig(Config):

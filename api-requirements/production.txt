@@ -6,7 +6,8 @@ Flask-RESTful
 Flask-SQLAlchemy
 flask-migrate
 flask-apidoc-extend
-psycopg2-binary
+mariadb
+pymysql
 requests
 pycryptodome
 bcrypt

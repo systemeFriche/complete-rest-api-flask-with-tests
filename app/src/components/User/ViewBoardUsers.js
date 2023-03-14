@@ -1,29 +1,31 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 
-import './ViewBoardUsers.css';
+import './ViewBoardUsers.css'
 
-import ViewUser from './ViewUser';
- 
-const ViewBoardUsers = ({users}) => {
+import ViewUser from './ViewUser'
 
-    //prop
-        //users : [{access: 2, id: 1, username: "fguntz"},{...},{...}]
-    //no state
-    //no store
-    //no param
-    //no local variable
+const ViewBoardUsers = ({ users }) => {
+  // prop
+  // users : [{access: 2, id: 1, username: "fguntz"},{...},{...}]
+  // no state
+  // no store
+  // no param
+  // no local variable
 
-    return (
+  return (
         <div className="users-list">
-        { //s'il y a des users à afficher
-            users.length > 0 ? 
-                users.map(user =>
+        { // s'il y a des users à afficher
+            users.length > 0
+              ? users.map(user =>
                     <ViewUser key={user.id} user={user}/>)
-            :
-                <p className="message">Il n'y a pas d'utilisateurs à afficher...</p>
+              : <p className="message">Il n&rsquo;y a pas d&rsquo;utilisateurs à afficher...</p>
         }
     </div>
-    )
+  )
 }
- 
-export default ViewBoardUsers;
+
+ViewBoardUsers.propTypes = {
+  users: PropTypes.array.isRequired
+}
+
+export default ViewBoardUsers

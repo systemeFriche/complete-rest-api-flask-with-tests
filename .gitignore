@@ -3,6 +3,7 @@
 docker/environment/dev/http.env
 docker/environment/prod/http_secret.env
 api/datafixtures/data.json
+api/tests/test_user.py
 
 
 # *********************************************** MISC **************************
