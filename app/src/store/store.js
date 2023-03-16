@@ -11,7 +11,3 @@ const mainReducer = combineReducers({
 export const store = configureStore({
   reducer: mainReducer
 })
-
-export const store = configureStore({
-  reducer: mainReducer
-})

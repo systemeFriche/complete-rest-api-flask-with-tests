@@ -14,8 +14,3 @@ export const getNameAccessFromId = (accessId) => {
   const result = ACCESS.find(item => item.id === accessId).name
   return result
 }
-
-export const getNameAccessFromId = (accessId) => {
-    let result = ACCESS.find( item => item.id === accessId).name
-    return result
-}

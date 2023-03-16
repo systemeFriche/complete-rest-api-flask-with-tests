@@ -1,7 +1,11 @@
 FROM python:3
 
-ARG APP_ENV
-ENV APP_ENV=$APP_ENV
+ENV APP_ENV=production
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+ENV FLASK_DEBUG=False
+ENV FLASK_RUN_HOST=127.0.0.1
+ENV FLASK_RUN_PORT=80
 
 # script pour installer mariadb connector
 # sinon erreur

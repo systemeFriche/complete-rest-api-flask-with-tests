@@ -1,7 +1,14 @@
 FROM fguntz/python-node-cpltrestapi:1.0
 
-ARG REACT_APP_API_EP_URI
-ENV REACT_APP_API_EP_URI=$REACT_APP_API_EP_URI
+ENV REACT_APP_API_EP_URI=https://preprod.apdmn.fr/api
+ARG SECRET_KEY
+ENV SECRET_KEY=$SECRET_KEY
+ARG SECRET_KEY_AES
+ENV SECRET_KEY_AES=$SECRET_KEY_AES
+ARG SQLALCHEMY_DATABASE_URI
+ENV SQLALCHEMY_DATABASE_URI=$SQLALCHEMY_DATABASE_URI
+ARG GHCR_PAT
+ENV GHCR_PAT=$GHCR_PAT
 
 COPY api /usr/src/app
 
@@ -15,5 +22,7 @@ RUN cd /tmp/app && yarn build \
     && rm -rf /tmp/app
 
 WORKDIR /usr/src/app
+
+EXPOSE 80
 
 CMD ["gunicorn", "--config", "gunicorn_config.py", "app:app"]

@@ -30,6 +30,3 @@ export const useFetch = (service) => {
 
   return { data, loading, error }
 }
-
-    return { data, loading, error }
-};
