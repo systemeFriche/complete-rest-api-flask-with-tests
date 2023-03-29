@@ -58,7 +58,7 @@ const Login = () => {
                     <input id="userpassword" name="userpassword" type="password" placeholder="Mot de passe" ref={passwordInput}/>
                 </div>
                 <div className='controls'>
-                    <input type="submit" value="Se connecter" />
+                    <input data-testid="login-submit" type="submit" value="Se connecter" />
                 </div>
             </form>
             {error && _displayError()}
